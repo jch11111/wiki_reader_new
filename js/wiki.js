@@ -4,12 +4,47 @@ var wikki = (function () {
         $(function () {
 
 //            $("#btnToggleTemperature").click(toggleTemperature);
+            addEventHandlers();
 
-            $.when(getWikki())
-            .then(displayWikki);
+            //$.when(getWikki())
+            //.then(displayWikki);
                 
         })
     };
+
+    function addEventHandlers() {
+        $('button').click(function () {
+            searchAndDisplayResults();
+        });
+    }
+
+    function searchAndDisplayResults() {
+        $.when(getSearchResults())
+        .then(displaySearchResults);
+    }
+
+    function getSearchResults() {
+        var searchText = encodeURIComponent($('#searchText').val());
+        var searchUrl = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + searchText + "&format=json&callback=?";
+
+        return $.ajax({
+            url: searchUrl,
+            dataType: 'json',
+            type: 'POST'
+        });
+    }
+
+    function displaySearchResults(searchResults) {
+        var resultsDiv = $('#results');
+        resultsDiv.empty();
+
+        for (var articleNumber = 0; articleNumber < 10; articleNumber++) {
+            var newDiv = $('<div></div>')
+            newDiv.html(searchResults.query.search[articleNumber].snippet);
+            resultsDiv.append(newDiv);
+        }
+    }
+
 
     function getWikki() {
     
