@@ -1,0 +1,16 @@
+div {
+    margin: 50px auto;
+    text-align: center;
+}
+
+img {
+    width: 100px;
+}
+
+a:link {
+    color: black;
+}
+
+a:visited {
+    color: black;
+}

@@ -14,13 +14,23 @@ var wikki = (function () {
 
     function addEventHandlers() {
         $('button').click(function () {
-            searchAndDisplayResults();
+            searchButton_click();
+        });
+        $('#searchText').keydown(function (e) {
+            searchText_onKeyDown(e.keyCode);
         });
     }
 
-    function searchAndDisplayResults() {
+    function searchButton_click() {
         $.when(getSearchResults())
-        .then(displaySearchResults);
+        .then(displaySearchResults)
+        .then($('#searchText').val(''));
+    }
+
+    function searchText_onKeyDown(keyCode) {
+        if (13 === keyCode) {
+            $('button').click();
+        }
     }
 
     function getSearchResults() {
@@ -35,12 +45,27 @@ var wikki = (function () {
     }
 
     function displaySearchResults(searchResults) {
-        var resultsDiv = $('#results');
+        var resultsDiv = $('#results'),
+            newDiv,
+            article,
+            articleTitleForUrl,
+            articleLink;
+
         resultsDiv.empty();
 
         for (var articleNumber = 0; articleNumber < 10; articleNumber++) {
-            var newDiv = $('<div></div>')
-            newDiv.html(searchResults.query.search[articleNumber].snippet);
+            newDiv = $('<div></div>');
+            article = searchResults.query.search[articleNumber];
+            articleTitleForUrl = article.title.replace(/\s/g, '_');
+            articleLink =
+                "<a href=\"" +
+                "https://en.wikipedia.org/wiki/" +
+                articleTitleForUrl + 
+                "\" target=\"_blank\">" +
+                "<b>" + article.title + ": " + "</b>" +
+                article.snippet +
+                "</a>"
+            newDiv.html(articleLink);
             resultsDiv.append(newDiv);
         }
     }
