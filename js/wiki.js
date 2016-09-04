@@ -66,7 +66,7 @@ var wikki = (function () {
     }
 
     function displayHtml(htmlContent) {
-        var newDiv = $('<div></div>');
+        var newDiv = $('<div class="searchResult"></div>');
 
         newDiv.html(htmlContent);
         resultsDiv.append(newDiv);

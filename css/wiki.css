@@ -38,3 +38,9 @@ button {
 body {
     background-color: #999;
 }
+
+.searchResult {
+    border: 1px solid black;
+    padding: 5px;
+    background-color: #EEE;  
+}
